@@ -1,0 +1,115 @@
+
+
+Cisco IOS Software, ISR Software (X86_64_LINUX_IOSD-UNIVERSALK9-M), Version 15.5(3)S5, RELEASE SOFTWARE (fc2)
+Technical Support: http://www.cisco.com/techsupport
+Copyright (c) 1986-2017 by Cisco Systems, Inc.
+Compiled Thu 19-Jan-17 11:24 by mcpre
+
+
+
+Cisco IOS - XE software, Copyright(c) 2005 - 2017 by cisco Systems, Inc.
+All rights reserved.Certain components of Cisco IOS - XE software are
+licensed under the GNU General Public License("GPL") Version 2.0.The
+software code licensed under GPL Version 2.0 is free software that comes
+with ABSOLUTELY NO WARRANTY.You can redistribute and / or modify such
+GPL code under the terms of GPL Version 2.0.For more details, see the
+documentation or "License Notice" file accompanying the IOS - XE software,
+or the applicable URL provided on the flyer accompanying the IOS - XE
+software.
+
+
+
+This product contains cryptographic features and is subject to United
+States and local country laws governing import, export, transfer and
+use. Delivery of Cisco cryptographic products does not imply
+third-party authority to import, export, distribute or use encryption.
+Importers, exporters, distributors and users are responsible for
+compliance with U.S. and local country laws. By using this product you
+agree to comply with applicable laws and regulations. If you are unable
+to comply with U.S. and local laws, return this product immediately.
+
+A summary of U.S. laws governing Cisco cryptographic products may be found at:
+http://www.cisco.com/wwl/export/crypto/tool/stqrg.html
+
+If you require further assistance please contact us by sending email to
+export@cisco.com.
+
+cisco ISR4331/K9 (1RU) processor with 1795999K/6147K bytes of memory.
+Processor board ID FLM232010G0
+3 Gigabit Ethernet interfaces
+32768K bytes of non-volatile configuration memory.
+4194304K bytes of physical memory.
+3223551K bytes of flash memory at bootflash:.
+
+
+Press RETURN to get started!
+
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet0/0/0, changed state to up
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet0/0/0.10, changed state to up
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet0/0/0.20, changed state to up
+
+
+Core-Router>ena
+Core-Router#conf term
+Enter configuration commands, one per line.  End with CNTL/Z.
+Core-Router(config)#interface gigabitEthernet 0/0/1
+Core-Router(config-if)#description --- Direct Connection to Simulated Public Internet ---
+Core-Router(config-if)#ip address 8.8.8.1 255.255.255.0
+Core-Router(config-if)#noshutdown
+                         ^
+% Invalid input detected at '^' marker.
+	
+Core-Router(config-if)#no shutdown
+
+Core-Router(config-if)#
+%LINK-5-CHANGED: Interface GigabitEthernet0/0/1, changed state to up
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet0/0/1, changed state to up
+
+Core-Router(config-if)#exit
+Core-Router(config)#access-list 1 permit 192.168.10.0 0.0.0.255
+Core-Router(config)#access-list 1 permit 192.168.20.0 0.0.0.255
+Core-Router(config)#ip nat inside source list 1 interface gigabitEthernet 0/0/1 overload
+Core-Router(config)#interface gigabitEthernet 0/0/1
+Core-Router(config-if)#ip nat outside
+Core-Router(config-if)#exit
+Core-Router(config)#interface gigabitEthernet 0/0/0.10
+Core-Router(config-subif)#ip nat outside
+Core-Router(config-subif)#exit
+Core-Router(config)#interface gigabitEthernet 0/0/0.20
+Core-Router(config-subif)#ip nat outside
+Core-Router(config-subif)#exit
+Core-Router(config)#
+Core-Router(config)#ip access-list extended RECEPTION_SECURITY_POLICY
+Core-Router(config-ext-nacl)#deny ip 192.168.10.0 0.0.0.255 192.168.20.0 0.0.0.255
+Core-Router(config-ext-nacl)#permit ip 192.168.10.0 0.0.0.255 any
+Core-Router(config-ext-nacl)#exit
+Core-Router(config)#interface gigabitEthernet 0/0/0.10
+Core-Router(config-subif)#ip access group RECEPTION_SECURITY_POLICY in
+                                          ^
+% Invalid input detected at '^' marker.
+	
+Core-Router(config-subif)#ip access group ?
+  in   inbound packets
+  out  outbound packets
+Core-Router(config-subif)#ip access group in
+Core-Router(config-subif)#end
+Core-Router#
+%SYS-5-CONFIG_I: Configured from console by console
+write memory
+Building configuration...
+[OK]
+Core-Router#conf term
+Enter configuration commands, one per line.  End with CNTL/Z.
+Core-Router(config)#interface gigabitEthernet 0/0/0.10
+Core-Router(config-subif)#ip access-group RECEPTION_SECURITY_POLICY in
+Core-Router(config-subif)#end
+Core-Router#
+%SYS-5-CONFIG_I: Configured from console by console
+write memory
+Building configuration...
+[OK]
+Core-Router#
